@@ -1,7 +1,10 @@
 // src/lib/api.js
 
-// URL base da API
-const BASE_URL = 'http://localhost:5000/api';
+// Detecta se está em dev ou produção e define a URL base da API
+const BASE_URL =
+  typeof window !== "undefined" && window.location.origin.includes("localhost")
+    ? "http://localhost:5000/api"
+    : "https://encouraging-susanne-fynancce-v2-b9604e3e.koyeb.app/api";
 
 /**
  * Busca os dados de um produto a partir do UUID de um pedido
@@ -11,13 +14,13 @@ const BASE_URL = 'http://localhost:5000/api';
 export async function buscarProduto(uuid) {
   const res = await fetch(`${BASE_URL}/orders/${uuid}`);
 
-  if (!res.ok) throw new Error('Erro ao buscar produto');
+  if (!res.ok) throw new Error("Erro ao buscar produto");
 
   const data = await res.json();
 
   // Retorna os dados estruturados do produto
   return {
-    _id: data.produto._id || '', // Garante que sempre haja um _id
+    _id: data.produto._id || "", // Garante que sempre haja um _id
     nome: data.produto.nome,
     descricao: data.produto.descricao,
     preco: data.produto.preco,
@@ -33,8 +36,8 @@ export async function buscarProduto(uuid) {
  */
 export async function criarPedido(produtoId, form) {
   const res = await fetch(`${BASE_URL}/orders`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       produtoId,
       nomeCliente: form.nomeCliente,
@@ -44,7 +47,7 @@ export async function criarPedido(produtoId, form) {
     }),
   });
 
-  if (!res.ok) throw new Error('Erro ao criar pedido');
+  if (!res.ok) throw new Error("Erro ao criar pedido");
 
   const data = await res.json();
 

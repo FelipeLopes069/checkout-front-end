@@ -1,55 +1,63 @@
-'use client';
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import api from "../api/api";
-import "../styles/login.css"; // ✅ Certifique-se de que o nome e o caminho do CSS estão corretos
+'use client'; // Ativa funcionalidades do React Client (Next.js App Router)
 
+// Importações
+import { useState } from "react"; // Hook para gerenciar estados
+import { useRouter } from "next/navigation"; // Para redirecionar após login
+import Link from "next/link"; // Para navegação entre páginas
+import api from "../api/api"; // Instância do axios configurado
+import "../styles/login.css"; // Estilo visual da página de login
+
+// Componente principal da página de login
 export default function LoginPage() {
-  const router = useRouter();
+  const router = useRouter(); // Hook para navegação programática
 
-  const [form, setForm] = useState({ email: "", senha: "" });
-  const [mostrarSenha, setMostrarSenha] = useState(false);
-  const [erro, setErro] = useState("");
-  const [carregando, setCarregando] = useState(false);
+  // Estados do formulário e controle de interface
+  const [form, setForm] = useState({ email: "", senha: "" }); // Campos do login
+  const [mostrarSenha, setMostrarSenha] = useState(false); // Toggle visual da senha
+  const [erro, setErro] = useState(""); // Mensagem de erro
+  const [carregando, setCarregando] = useState(false); // Estado de carregamento
 
+  // Atualiza os campos do formulário conforme o usuário digita
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // Submete o login
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErro("");
     setCarregando(true);
 
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 5000);
+    const controller = new AbortController(); // Controlador de timeout
+    const timeout = setTimeout(() => controller.abort(), 5000); // Cancela se demorar mais que 5s
 
     try {
-      localStorage.removeItem("token");
+      localStorage.removeItem("token"); // Garante que não há token anterior
 
-      const data = await api.post("/api/auth/login", form);
-      localStorage.setItem("token", data.token);
+      const data = await api.post("/api/auth/login", form); // Faz requisição de login
+      localStorage.setItem("token", data.token); // Salva o token no navegador
 
-      window.location.href = "/dashboard";
+      window.location.href = "/dashboard"; // Redireciona após login
     } catch (err) {
       console.error("❌ Erro no login:", err);
       if (err.name === "AbortError") {
-        setErro("⏱️ O servidor não respondeu.");
+        setErro("⏱️ O servidor não respondeu."); // Erro de timeout
       } else {
-        setErro(err.message || "Erro ao conectar.");
+        setErro(err.message || "Erro ao conectar."); // Erro genérico
       }
     } finally {
-      clearTimeout(timeout);
-      setCarregando(false);
+      clearTimeout(timeout); // Limpa o timeout
+      setCarregando(false); // Libera o botão
     }
   };
 
+  // Interface da página de login
   return (
     <div className="login-container">
       <div className="login-card">
         <h1 className="login-title">Entrar no Painel</h1>
 
+        {/* Formulário de login */}
         <form className="login-form" onSubmit={handleSubmit}>
           <input
             type="email"
@@ -62,13 +70,14 @@ export default function LoginPage() {
 
           <div className="input-wrapper">
             <input
-              type={mostrarSenha ? "text" : "password"}
+              type={mostrarSenha ? "text" : "password"} // Alterna exibição da senha
               name="senha"
               placeholder="Senha"
               value={form.senha}
               onChange={handleChange}
               required
             />
+            {/* Ícone para mostrar/esconder senha */}
             <span
               className="senha-toggle"
               onClick={() => setMostrarSenha(!mostrarSenha)}
@@ -77,6 +86,7 @@ export default function LoginPage() {
             </span>
           </div>
 
+          {/* Exibe erro se existir */}
           {erro && <p className="login-erro">{erro}</p>}
 
           <button type="submit" className="btn-neon" disabled={carregando}>
@@ -84,6 +94,7 @@ export default function LoginPage() {
           </button>
         </form>
 
+        {/* Links de navegação */}
         <div className="login-links">
           <p>
             Não tem uma conta?{" "}

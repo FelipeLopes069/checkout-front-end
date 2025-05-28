@@ -1,24 +1,29 @@
-"use client"; // Habilita funcionalidades do React no lado do cliente
+'use client'; // Habilita a renderização no lado do cliente (obrigatório em componentes com hooks ou interatividade no Next.js App Router)
 
-import { useEffect, useState } from "react";
-import { FaEdit, FaTrash, FaClipboard } from "react-icons/fa";
-import api from "../api/api";
-import "../styles/produtos.css";
+// Importações de dependências e estilos
+import { useEffect, useState } from "react"; // Hooks React para estados e efeitos colaterais
+import { FaEdit, FaTrash, FaClipboard } from "react-icons/fa"; // Ícones para ações
+import api from "../api/api"; // Instância personalizada do Axios
+import "../styles/produtos.css"; // Estilos da página de produtos
 
+// Componente principal da página de produtos
 export default function ProdutosPage() {
-  const [produtos, setProdutos] = useState([]);
-  const [mostrarModal, setMostrarModal] = useState(false);
-  const [modoEdicao, setModoEdicao] = useState(false);
-  const [produtoEditando, setProdutoEditando] = useState(null);
-  const [form, setForm] = useState({ nome: "", descricao: "", preco: "", imagem: "" });
-  const [preview, setPreview] = useState(null);
-  const [erro, setErro] = useState("");
-  const [carregando, setCarregando] = useState(false);
+  // Estados da interface e formulário
+  const [produtos, setProdutos] = useState([]); // Lista de produtos
+  const [mostrarModal, setMostrarModal] = useState(false); // Controle do modal
+  const [modoEdicao, setModoEdicao] = useState(false); // Alterna entre criar e editar
+  const [produtoEditando, setProdutoEditando] = useState(null); // Produto sendo editado
+  const [form, setForm] = useState({ nome: "", descricao: "", preco: "", imagem: "" }); // Dados do formulário
+  const [preview, setPreview] = useState(null); // Pré-visualização da imagem
+  const [erro, setErro] = useState(""); // Mensagens de erro
+  const [carregando, setCarregando] = useState(false); // Estado de carregamento
 
+  // Carrega os produtos ao iniciar
   useEffect(() => {
     carregarProdutos();
   }, []);
 
+  // Função para buscar produtos no backend
   const carregarProdutos = async () => {
     try {
       const data = await api.get("/api/products");
@@ -28,22 +33,24 @@ export default function ProdutosPage() {
     }
   };
 
+  // Atualiza os campos do formulário conforme digita
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // Lida com o upload da imagem do produto
   const handleImagem = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    setPreview(URL.createObjectURL(file));
+    setPreview(URL.createObjectURL(file)); // Mostra preview local da imagem
     const formData = new FormData();
     formData.append("imagem", file);
 
     try {
       setCarregando(true);
-      const data = await api.upload("/api/products/upload", formData);
-      setForm((prev) => ({ ...prev, imagem: data.url }));
+      const data = await api.upload("/api/products/upload", formData); // Faz upload da imagem
+      setForm((prev) => ({ ...prev, imagem: data.url })); // Salva URL no estado
     } catch (err) {
       console.error("❌ Erro ao fazer upload:", err.message);
       setErro("Erro ao fazer upload da imagem");
@@ -52,6 +59,7 @@ export default function ProdutosPage() {
     }
   };
 
+  // Abre modal com dados de um produto existente para edição
   const abrirModalEdicao = (produto) => {
     setProdutoEditando(produto._id);
     setForm({
@@ -65,6 +73,7 @@ export default function ProdutosPage() {
     setMostrarModal(true);
   };
 
+  // Salva produto novo ou atualiza existente
   const salvarProduto = async (e) => {
     e.preventDefault();
     setErro("");
@@ -86,8 +95,8 @@ export default function ProdutosPage() {
         });
       }
 
-      carregarProdutos();
-      setForm({ nome: "", descricao: "", preco: "", imagem: "" });
+      carregarProdutos(); // Recarrega a lista
+      setForm({ nome: "", descricao: "", preco: "", imagem: "" }); // Limpa formulário
       setPreview(null);
       setMostrarModal(false);
       setModoEdicao(false);
@@ -98,15 +107,17 @@ export default function ProdutosPage() {
     }
   };
 
+  // Exclui um produto da lista
   const excluirProduto = async (id) => {
     try {
       await api.delete(`/api/products/${id}`);
-      setProdutos(produtos.filter((p) => p._id !== id));
+      setProdutos(produtos.filter((p) => p._id !== id)); // Remove da UI
     } catch (err) {
       console.error("❌ Erro ao excluir produto:", err.message);
     }
   };
 
+  // Copia link público do produto para a área de transferência
   const copiarLinkDeVenda = async (uuid) => {
     try {
       const link = `${window.location.origin}/buy/${uuid}`;
@@ -117,6 +128,7 @@ export default function ProdutosPage() {
     }
   };
 
+  // Gera URL da imagem com fallback e ambiente
   const getImagemUrl = (url) => {
     if (!url) return "https://via.placeholder.com/300x200.png?text=Produto";
 
@@ -128,10 +140,12 @@ export default function ProdutosPage() {
     return url.startsWith("http") ? url : `${backendBaseURL}${url}`;
   };
 
+  // Monta link público da página de venda
   const getLinkPublico = (uuid) => {
     return `${window.location.origin}/buy/${uuid}`;
   };
 
+  // Retorno da interface (JSX)
   return (
     <main className="pagina-produtos">
       <div className="produtos-topo">
@@ -155,6 +169,7 @@ export default function ProdutosPage() {
             Nenhum produto cadastrado.
           </p>
         )}
+
         {produtos.map((produto) => (
           <div key={produto._id} className="card-produto">
             <img
@@ -192,6 +207,7 @@ export default function ProdutosPage() {
         ))}
       </div>
 
+      {/* Modal de criação/edição de produto */}
       {mostrarModal && (
         <div className="modal-overlay">
           <div className="modal">
