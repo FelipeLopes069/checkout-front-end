@@ -1,23 +1,20 @@
 "use client"; // Habilita funcionalidades do React no lado do cliente
 
-// Importações de dependências e estilos
 import { useEffect, useState } from "react";
 import { FaEdit, FaTrash, FaClipboard } from "react-icons/fa";
 import api from "../api/api";
 import "../styles/produtos.css";
 
 export default function ProdutosPage() {
-  // Estados principais
-  const [produtos, setProdutos] = useState([]); // Lista de produtos
-  const [mostrarModal, setMostrarModal] = useState(false); // Controle do modal
-  const [modoEdicao, setModoEdicao] = useState(false); // Alterna entre criar ou editar produto
-  const [produtoEditando, setProdutoEditando] = useState(null); // ID do produto em edição
-  const [form, setForm] = useState({ nome: "", descricao: "", preco: "", imagem: "" }); // Dados do formulário
-  const [preview, setPreview] = useState(null); // Preview da imagem
-  const [erro, setErro] = useState(""); // Erro do formulário
-  const [carregando, setCarregando] = useState(false); // Estado de carregamento
+  const [produtos, setProdutos] = useState([]);
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const [modoEdicao, setModoEdicao] = useState(false);
+  const [produtoEditando, setProdutoEditando] = useState(null);
+  const [form, setForm] = useState({ nome: "", descricao: "", preco: "", imagem: "" });
+  const [preview, setPreview] = useState(null);
+  const [erro, setErro] = useState("");
+  const [carregando, setCarregando] = useState(false);
 
-  // Ao carregar a página, busca os produtos
   useEffect(() => {
     carregarProdutos();
   }, []);
@@ -31,17 +28,15 @@ export default function ProdutosPage() {
     }
   };
 
-  // Atualiza o estado do form ao digitar
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Upload de imagem com preview e envio ao backend
   const handleImagem = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    setPreview(URL.createObjectURL(file)); // Mostra preview
+    setPreview(URL.createObjectURL(file));
     const formData = new FormData();
     formData.append("imagem", file);
 
@@ -57,7 +52,6 @@ export default function ProdutosPage() {
     }
   };
 
-  // Abre o modal para editar um produto existente
   const abrirModalEdicao = (produto) => {
     setProdutoEditando(produto._id);
     setForm({
@@ -71,14 +65,12 @@ export default function ProdutosPage() {
     setMostrarModal(true);
   };
 
-  // Salva produto novo ou edita existente
   const salvarProduto = async (e) => {
     e.preventDefault();
     setErro("");
 
     try {
       if (modoEdicao && produtoEditando) {
-        // Atualiza produto
         await api.put(`/api/products/${produtoEditando}`, {
           nome: form.nome,
           descricao: form.descricao,
@@ -86,7 +78,6 @@ export default function ProdutosPage() {
           imagem: form.imagem,
         });
       } else {
-        // Cria novo produto
         await api.post("/api/products", {
           nome: form.nome,
           descricao: form.descricao,
@@ -95,7 +86,6 @@ export default function ProdutosPage() {
         });
       }
 
-      // Limpa estados e fecha modal
       carregarProdutos();
       setForm({ nome: "", descricao: "", preco: "", imagem: "" });
       setPreview(null);
@@ -108,7 +98,6 @@ export default function ProdutosPage() {
     }
   };
 
-  // Exclui produto
   const excluirProduto = async (id) => {
     try {
       await api.delete(`/api/products/${id}`);
@@ -118,7 +107,6 @@ export default function ProdutosPage() {
     }
   };
 
-  // Copia link público de venda para área de transferência
   const copiarLinkDeVenda = async (uuid) => {
     try {
       const link = `${window.location.origin}/buy/${uuid}`;
@@ -129,20 +117,23 @@ export default function ProdutosPage() {
     }
   };
 
-  // Garante exibição correta da imagem
   const getImagemUrl = (url) => {
     if (!url) return "https://via.placeholder.com/300x200.png?text=Produto";
-    return url.startsWith("http") ? url : `http://localhost:5000${url}`;
+
+    const backendBaseURL =
+      typeof window !== "undefined" && window.location.origin.includes("localhost")
+        ? "http://localhost:5000"
+        : "https://coloured-siana-fynancce-v2-8cb1dd20.koyeb.app";
+
+    return url.startsWith("http") ? url : `${backendBaseURL}${url}`;
   };
 
-  // Gera link público do produto
   const getLinkPublico = (uuid) => {
-    return `http://localhost:3000/buy/${uuid}`;
+    return `${window.location.origin}/buy/${uuid}`;
   };
 
   return (
     <main className="pagina-produtos">
-      {/* Cabeçalho com botão para adicionar novo produto */}
       <div className="produtos-topo">
         <h1 className="produtos-titulo">Seus Produtos</h1>
         <button
@@ -158,7 +149,6 @@ export default function ProdutosPage() {
         </button>
       </div>
 
-      {/* Lista de produtos */}
       <div className="grid-produtos">
         {produtos.length === 0 && (
           <p style={{ color: "#ccc", marginTop: "20px" }}>
@@ -202,7 +192,6 @@ export default function ProdutosPage() {
         ))}
       </div>
 
-      {/* Modal de criação/edição */}
       {mostrarModal && (
         <div className="modal-overlay">
           <div className="modal">
