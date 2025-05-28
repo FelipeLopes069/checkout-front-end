@@ -1,0 +1,143 @@
+.topbar {
+  width: 100%;
+  height: 70px;
+  background: linear-gradient(to right, #0c0c0c, #111111);
+  box-shadow: 0 0 12px rgba(162, 89, 255, 0.2);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  border-bottom: 1px solid #a259ff;
+}
+
+.topbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 100%;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.topbar-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #a259ff;
+  letter-spacing: 1px;
+  text-shadow: 0 0 6px #a259ff99;
+  white-space: nowrap;
+}
+
+/* Toggle do menu mobile */
+.menu-toggle {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.6rem;
+  cursor: pointer;
+  display: none;
+}
+
+/* NAV DESKTOP */
+.topbar-nav {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+
+.topbar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffffcc;
+  font-weight: 600;
+  font-size: 1.05rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.topbar-nav a svg {
+  font-size: 1.25rem;
+  color: #a259ff;
+  transition: color 0.2s ease;
+}
+
+.topbar-nav a:hover {
+  color: #a259ff;
+}
+
+.topbar-nav a:hover svg {
+  color: #b57aff;
+}
+
+.topbar-nav a::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: #a259ff;
+  transition: width 0.2s ease;
+}
+
+.topbar-nav a:hover::after {
+  width: 100%;
+}
+
+/* BOTÃO SAIR em vermelho */
+.topbar-nav button.logout-button {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #ff4d4d;
+  transition: color 0.2s ease;
+}
+
+.topbar-nav button.logout-button:hover {
+  color: #ff6b6b;
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .topbar-nav {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    right: 24px;
+    background-color: #1a1a1a;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #000;
+    z-index: 1000;
+    width: 200px;
+  }
+
+  .topbar-nav.ativo {
+    display: flex;
+  }
+
+  .topbar-nav a,
+  .topbar-nav button.logout-button {
+    padding: 10px 0;
+    border-bottom: 1px solid #333;
+    width: 100%;
+  }
+
+  .topbar-nav a:last-child,
+  .topbar-nav button.logout-button:last-child {
+    border-bottom: none;
+  }
+}

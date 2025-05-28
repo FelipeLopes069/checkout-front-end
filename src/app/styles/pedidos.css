@@ -1,0 +1,118 @@
+.pagina-pedidos {
+  padding: 100px 32px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  color: #fff;
+}
+
+.titulo-pedidos {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #a259ff;
+  margin-bottom: 32px;
+}
+
+.tabela-pedidos {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.tabela-pedidos th,
+.tabela-pedidos td {
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 1px solid #2a2a2a;
+  font-size: 0.95rem;
+}
+
+.tabela-pedidos th {
+  background-color: #181818;
+  color: #a259ff;
+}
+
+.tabela-pedidos td {
+  color: #ccc;
+}
+
+.botao-detalhes {
+  padding: 8px 14px;
+  background-color: #a259ff;
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.botao-detalhes:hover {
+  background-color: #b480ff;
+}
+
+/* Cores por status */
+.status-pago {
+  color: #00ffa2;
+  font-weight: bold;
+}
+
+.status-aguardando {
+  color: #ffaa00;
+  font-weight: bold;
+}
+
+.status-cancelado {
+  color: #ff4d4d;
+  font-weight: bold;
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+  .tabela-pedidos thead {
+    display: none;
+  }
+
+  .tabela-pedidos,
+  .tabela-pedidos tbody,
+  .tabela-pedidos tr,
+  .tabela-pedidos td {
+    display: block;
+    width: 100%;
+  }
+
+  .tabela-pedidos tr {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #333;
+    padding: 12px;
+    background-color: #121212;
+    border-radius: 8px;
+  }
+
+  .tabela-pedidos td {
+    padding-left: 120px; /* espaço para o label à esquerda */
+    position: relative;
+    font-size: 0.95rem;
+    border: none;
+    text-align: left;
+  }
+
+  .tabela-pedidos td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: bold;
+    color: #a259ff;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .tabela-pedidos td:not(:last-child) {
+    margin-bottom: 10px;
+  }
+}

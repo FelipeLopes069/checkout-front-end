@@ -1,0 +1,85 @@
+/* Reset básico para remover margens e paddings padrão */
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background-color: #0a0318;
+    box-sizing: border-box;
+    font-family: 'Geist', sans-serif;
+  }
+  
+  /* Container principal da home */
+  .home-container {
+    width: 100%;
+    min-height: 100vh;
+    padding: 100px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-align: center;
+    box-sizing: border-box;
+  }
+  
+  /* Título principal */
+  .home-title {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 24px;
+  }
+  
+  /* Descrição abaixo do título */
+  .home-desc {
+    font-size: 1.25rem;
+    color: #ccc;
+    max-width: 600px;
+    margin-bottom: 48px;
+    line-height: 1.6;
+  }
+  
+  /* Container dos botões */
+  .home-buttons {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  /* Estilo dos botões com efeito neon */
+  .btn-neon {
+    position: relative;
+    padding: 14px 32px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: 2px solid transparent;
+    background: linear-gradient(to right, #7f5cff, #00baff) border-box;
+    color: white;
+    background-clip: padding-box;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    z-index: 1;
+  }
+  
+  /* Efeito de borda neon */
+  .btn-neon::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 2px;
+    background: linear-gradient(to right, #7f5cff, #00baff);
+    border-radius: inherit;
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out;
+    mask-composite: exclude;
+    z-index: -1;
+  }
+  
+  /* Efeito ao passar o mouse */
+  .btn-neon:hover {
+    opacity: 0.85;
+  }

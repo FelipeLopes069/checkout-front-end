@@ -1,0 +1,149 @@
+.pagina-dashboard {
+  padding: 100px 32px 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  color: #fff;
+}
+
+.dashboard-titulo {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 32px;
+  color: #a259ff;
+}
+
+.dashboard-subtitulo {
+  margin-top: 48px;
+  margin-bottom: 16px;
+  font-size: 1.2rem;
+  color: #ccc;
+}
+
+.dashboard-cards {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.card-dashboard {
+  background-color: #1a1a1a;
+  border: 1px solid #a259ff55;
+  border-radius: 10px;
+  padding: 20px;
+  min-width: 250px;
+  flex: 1;
+  box-shadow: 0 0 12px #a259ff22;
+  transition: transform 0.2s ease;
+  text-align: center;
+}
+
+.card-dashboard h3 {
+  font-size: 1rem;
+  color: #ccc;
+  margin-bottom: 8px;
+}
+
+.card-dashboard p {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #a259ff;
+}
+
+.card-dashboard:hover {
+  transform: translateY(-4px);
+}
+
+.card-icon {
+  font-size: 24px;
+  color: #a259ff;
+  margin-bottom: 12px;
+}
+
+/* ✅ Envolvendo a tabela */
+.tabela-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 0 auto;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+
+.tabela-pedidos {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+  background-color: #121212;
+  border: 1px solid #333;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tabela-pedidos th,
+.tabela-pedidos td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #222;
+  font-size: 0.95rem;
+}
+
+.tabela-pedidos th {
+  color: #a259ff;
+  background-color: #181818;
+}
+
+.tabela-pedidos td {
+  color: #ddd;
+}
+
+/* Cores dos status */
+.status.pago {
+  color: #00ff88;
+  font-weight: bold;
+}
+
+.status.aguardando {
+  color: #ffaa00;
+  font-weight: bold;
+}
+
+.status.cancelado {
+  color: #ff4d4d;
+  font-weight: bold;
+}
+
+/* Ações rápidas */
+.acoes-rapidas {
+  display: flex;
+  gap: 16px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.botao-acao {
+  padding: 12px 20px;
+  background: #a259ff;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+  color: #000;
+  min-width: 180px;
+  text-align: center;
+}
+
+.botao-acao:hover {
+  background: #b173ff;
+}.tabela-container {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 16px;
+}
+
+.tabela-pedidos {
+  min-width: 680px;
+}.tabela-vazia {
+  text-align: center;
+  opacity: 0.6;
+}

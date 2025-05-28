@@ -1,0 +1,72 @@
+/* styles/novoPedido.css */
+
+.pagina-novo-pedido {
+    padding: 100px 32px 40px;
+    max-width: 600px;
+    margin: 0 auto;
+    color: #fff;
+  }
+  
+  .novo-pedido-titulo {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #a259ff;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+  
+  .form-novo-pedido {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    background-color: #1a1a1a;
+    padding: 24px;
+    border-radius: 10px;
+    border: 1px solid #333;
+    box-shadow: 0 0 10px #a259ff22;
+  }
+  
+  .form-novo-pedido label {
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: #ccc;
+  }
+  
+  .form-novo-pedido input,
+  .form-novo-pedido select {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    background-color: #121212;
+    color: #fff;
+    font-size: 0.95rem;
+  }
+  
+  .form-novo-pedido button {
+    background-color: #a259ff;
+    color: #000;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .form-novo-pedido button:hover {
+    background-color: #b173ff;
+  }
+  
+  .mensagem-sucesso {
+    margin-top: 16px;
+    color: #00ffa2;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .mensagem-erro {
+    margin-top: 16px;
+    color: #ff4d4d;
+    font-weight: bold;
+    text-align: center;
+  }
