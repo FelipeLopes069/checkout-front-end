@@ -1,5 +1,4 @@
-"use client";
-
+'use client';
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -9,36 +8,29 @@ import "../styles/login.css"; // ✅ Certifique-se de que o nome e o caminho do 
 export default function LoginPage() {
   const router = useRouter();
 
-  // Estados do formulário
-  const [form, setForm] = useState({ email: "", senha: "" }); // Campos do login
-  const [mostrarSenha, setMostrarSenha] = useState(false); // Alterna entre mostrar/esconder senha
-  const [erro, setErro] = useState(""); // Exibe mensagens de erro
-  const [carregando, setCarregando] = useState(false); // Controla estado de carregamento do botão
+  const [form, setForm] = useState({ email: "", senha: "" });
+  const [mostrarSenha, setMostrarSenha] = useState(false);
+  const [erro, setErro] = useState("");
+  const [carregando, setCarregando] = useState(false);
 
-  // Atualiza os campos conforme o usuário digita
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Envia os dados de login para a API
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErro("");
     setCarregando(true);
 
-    const controller = new AbortController(); // Para cancelar a requisição se demorar
-    const timeout = setTimeout(() => controller.abort(), 5000); // Timeout de 5s
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
 
     try {
-      localStorage.removeItem("token"); // Limpa token anterior, se houver
+      localStorage.removeItem("token");
 
-      // Envia os dados para a rota de login
       const data = await api.post("/api/auth/login", form);
-
-      // Armazena token retornado no localStorage
       localStorage.setItem("token", data.token);
 
-      // Redireciona para o dashboard (recarrega a página inteira)
       window.location.href = "/dashboard";
     } catch (err) {
       console.error("❌ Erro no login:", err);
@@ -59,7 +51,6 @@ export default function LoginPage() {
         <h1 className="login-title">Entrar no Painel</h1>
 
         <form className="login-form" onSubmit={handleSubmit}>
-          {/* Campo de e-mail */}
           <input
             type="email"
             name="email"
@@ -69,7 +60,6 @@ export default function LoginPage() {
             required
           />
 
-          {/* Campo de senha com botão de visualização 👁️ */}
           <div className="input-wrapper">
             <input
               type={mostrarSenha ? "text" : "password"}
@@ -87,16 +77,13 @@ export default function LoginPage() {
             </span>
           </div>
 
-          {/* Mensagem de erro, se houver */}
           {erro && <p className="login-erro">{erro}</p>}
 
-          {/* Botão de envio */}
           <button type="submit" className="btn-neon" disabled={carregando}>
             {carregando ? "Entrando..." : "Entrar"}
           </button>
         </form>
 
-        {/* Links para cadastro e recuperação de senha */}
         <div className="login-links">
           <p>
             Não tem uma conta?{" "}
