@@ -13,11 +13,11 @@ Frontend do sistema de vendas com painel moderno, controle de produtos e pedidos
 ## 📦 Instalação
 
 ```bash
-git clone https://seurepositorio.com/frontend.git
-cd frontend
+git clone https://github.com/FelipeLopes069/checkout-front-end.git
+cd fcheckout-front-end
 npm install
 # ou
-yarn
+yarn install
 ```
 
 
