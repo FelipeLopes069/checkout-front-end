@@ -1,22 +1,27 @@
-"use client"; // Permite uso de hooks e navegação no lado do cliente
+"use client"; // Habilita hooks e navegação no client side (Next.js App Router)
 
-// Importa os estilos e dependências
-import "../styles/pedidos.css";
+import "../styles/pedidos.css"; // Importa o novo CSS com classes renomeadas
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import api from "../api/api";
+import api from "../api/api"; // Importa instância Axios para chamadas à API
 
 export default function PedidosPage() {
-  const router = useRouter(); // Hook para redirecionamento
-  const [pedidos, setPedidos] = useState([]); // Estado que armazena os pedidos carregados
+  const router = useRouter(); // Permite navegação programática
+  const [pedidos, setPedidos] = useState([]); // Armazena a lista de pedidos carregados
+  const [responsivoAtivo, setResponsivoAtivo] = useState(false); // Ativa o layout responsivo só no client
 
-  // Carrega os pedidos ao montar o componente
+  // Executa após montagem no client para ativar layout responsivo via CSS
+  useEffect(() => {
+    setResponsivoAtivo(true);
+  }, []);
+
+  // Carrega pedidos da API ao montar o componente
   useEffect(() => {
     const carregarPedidos = async () => {
       try {
         const data = await api.get("/api/orders/dashboard");
 
-        // Formata os dados recebidos para uso na tabela
+        // Formata os dados para exibição
         const formatados = data.pedidos.map((p) => ({
           uuid: p.uuid,
           cliente: p.nomeCliente,
@@ -32,7 +37,7 @@ export default function PedidosPage() {
           }),
         }));
 
-        setPedidos(formatados); // Atualiza o estado com os dados formatados
+        setPedidos(formatados);
       } catch (err) {
         console.error("Erro ao carregar pedidos:", err);
       }
@@ -42,32 +47,45 @@ export default function PedidosPage() {
   }, []);
 
   return (
-    <main className="pagina-pedidos">
-      <h1 className="titulo-pedidos">Seus Pedidos</h1>
-      <table className="tabela-pedidos">
-        <thead>
-          <tr><th>Cliente</th><th>Produto</th><th>Valor</th><th>Status</th><th>Data</th><th></th></tr>
-        </thead>
-        <tbody>
-          {pedidos.map((p) => (
-            <tr key={p.uuid}>
-              <td data-label="Cliente">{p.cliente}</td>
-              <td data-label="Produto">{p.produto}</td>
-              <td data-label="Valor">R$ {p.valor.toFixed(2)}</td>
-              <td data-label="Status" className={`status-${p.status.toLowerCase()}`}>{p.status}</td>
-              <td data-label="Data">{p.criadoEm}</td>
-              <td data-label="Ação">
-                <button
-                  className="botao-detalhes"
-                  onClick={() => router.push(`/order/${p.uuid}`)}
-                >
-                  Ver detalhes
-                </button>
-              </td>
+    <main className="pedidos-container"> {/* Container principal da página */}
+      <h1 className="pedidos-titulo">Seus Pedidos</h1>
+
+      {/* Renderiza a tabela somente após o client estar montado para evitar glitch de responsividade */}
+      <div className={responsivoAtivo ? "responsivo-ativo" : ""}>
+        <table className="pedidos-tabela">
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Produto</th>
+              <th>Valor</th>
+              <th>Status</th>
+              <th>Data</th>
+              <th></th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {pedidos.map((p) => (
+              <tr key={p.uuid}>
+                <td data-label="Cliente">{p.cliente}</td>
+                <td data-label="Produto">{p.produto}</td>
+                <td data-label="Valor">R$ {p.valor.toFixed(2)}</td>
+                <td data-label="Status" className={`status-${p.status.toLowerCase()}`}>
+                  {p.status}
+                </td>
+                <td data-label="Data">{p.criadoEm}</td>
+                <td data-label="Ação">
+                  <button
+                    className="botao-ver"
+                    onClick={() => router.push(`/order/${p.uuid}`)} // Redireciona para a página de detalhes
+                  >
+                    Ver detalhes
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </main>
   );
 }

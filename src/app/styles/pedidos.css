@@ -1,18 +1,18 @@
-.pagina-pedidos {
+.pedidos-container {
   padding: 100px 32px 40px;
   max-width: 1200px;
   margin: 0 auto;
   color: #fff;
 }
 
-.titulo-pedidos {
+.pedidos-titulo {
   font-size: 1.6rem;
   font-weight: bold;
   color: #a259ff;
   margin-bottom: 32px;
 }
 
-.tabela-pedidos {
+.pedidos-tabela {
   width: 100%;
   border-collapse: collapse;
   background-color: #1a1a1a;
@@ -21,24 +21,24 @@
   overflow: hidden;
 }
 
-.tabela-pedidos th,
-.tabela-pedidos td {
+.pedidos-tabela th,
+.pedidos-tabela td {
   padding: 14px 18px;
   text-align: left;
   border-bottom: 1px solid #2a2a2a;
   font-size: 0.95rem;
 }
 
-.tabela-pedidos th {
+.pedidos-tabela th {
   background-color: #181818;
   color: #a259ff;
 }
 
-.tabela-pedidos td {
+.pedidos-tabela td {
   color: #ccc;
 }
 
-.botao-detalhes {
+.botao-ver {
   padding: 8px 14px;
   background-color: #a259ff;
   color: #000;
@@ -49,7 +49,7 @@
   transition: background 0.3s;
 }
 
-.botao-detalhes:hover {
+.botao-ver:hover {
   background-color: #b480ff;
 }
 
@@ -69,21 +69,21 @@
   font-weight: bold;
 }
 
-/* RESPONSIVO */
+/* RESPONSIVO ativado somente no client */
 @media (max-width: 768px) {
-  .tabela-pedidos thead {
+  .responsivo-ativo .pedidos-tabela thead {
     display: none;
   }
 
-  .tabela-pedidos,
-  .tabela-pedidos tbody,
-  .tabela-pedidos tr,
-  .tabela-pedidos td {
+  .responsivo-ativo .pedidos-tabela,
+  .responsivo-ativo .pedidos-tabela tbody,
+  .responsivo-ativo .pedidos-tabela tr,
+  .responsivo-ativo .pedidos-tabela td {
     display: block;
     width: 100%;
   }
 
-  .tabela-pedidos tr {
+  .responsivo-ativo .pedidos-tabela tr {
     margin-bottom: 20px;
     border-bottom: 1px solid #333;
     padding: 12px;
@@ -91,15 +91,15 @@
     border-radius: 8px;
   }
 
-  .tabela-pedidos td {
-    padding-left: 120px; /* espaço para o label à esquerda */
+  .responsivo-ativo .pedidos-tabela td {
+    padding-left: 120px;
     position: relative;
     font-size: 0.95rem;
     border: none;
     text-align: left;
   }
 
-  .tabela-pedidos td::before {
+  .responsivo-ativo .pedidos-tabela td::before {
     content: attr(data-label);
     position: absolute;
     left: 12px;
@@ -112,7 +112,21 @@
     white-space: nowrap;
   }
 
-  .tabela-pedidos td:not(:last-child) {
+  .responsivo-ativo .pedidos-tabela td:not(:last-child) {
     margin-bottom: 10px;
+  }
+}
+
+/* Força o navegador a reprocessar layout */
+.responsivo-ativo .pedidos-tabela {
+  animation: layoutFix 0.01s;
+}
+
+@keyframes layoutFix {
+  from {
+    opacity: 0.99;
+  }
+  to {
+    opacity: 1;
   }
 }
