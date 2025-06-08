@@ -1,7 +1,7 @@
 // api/api.js
 import axios from "axios";
 
-const baseURL = "https://coloured-siana-fynancce-v2-8cb1dd20.koyeb.app";
+const baseURL = "https://clumsy-june-fynancce-v2-efb041b8.koyeb.app";
 
 const instance = axios.create({
   baseURL,
