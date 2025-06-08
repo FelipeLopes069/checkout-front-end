@@ -42,20 +42,20 @@ export default function RegisterPage() {
     setCarregando(true);
 
     try {
-      const data = await api.post("/api/auth/register", {
+      const response = await api.post("/api/auth/register", {
         nome: form.nome,
         email: form.email,
         senha: form.senha,
       });
 
-      // Salva o token
-      localStorage.setItem("token", data.token);
+      // Salva o token corretamente
+      localStorage.setItem("token", response.data.token);
 
       // Redireciona para o dashboard e força reload para refletir estado autenticado
       router.push("/dashboard");
       setTimeout(() => {
         window.location.reload(); // Força atualização da página
-      }, 100); // Pequeno delay para garantir que o push ocorra antes do reload
+      }, 200); // Delay levemente maior para garantir o push
 
     } catch (err) {
       console.error("❌ Erro no registro:", err);

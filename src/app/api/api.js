@@ -1,71 +1,30 @@
-// Base da API (pode ser substituído por variável de ambiente se necessário)
+// api/api.js
+import axios from "axios";
+
 const baseURL = "https://coloured-siana-fynancce-v2-8cb1dd20.koyeb.app";
 
-/**
- * Recupera o token JWT armazenado localmente.
- */
-function getToken() {
-  return localStorage.getItem("token");
-}
+const instance = axios.create({
+  baseURL,
+});
 
-/**
- * Função genérica para chamadas à API.
- * Adiciona automaticamente o token (se existir) no cabeçalho Authorization.
- * Lida com FormData e tratamento de erros.
- */
-async function apiFetch(endpoint, options = {}) {
-  const token = getToken();
-
-  // Cabeçalhos dinâmicos
-  const headers = {
-    ...(token && { Authorization: `Bearer ${token}` }),
-    ...(options.body instanceof FormData
-      ? {} // Evita setar Content-Type quando for FormData
-      : { "Content-Type": "application/json" }),
-    ...options.headers,
-  };
-
-  try {
-    const res = await fetch(`${baseURL}${endpoint}`, {
-      ...options,
-      headers,
-    });
-
-    // Trata respostas com erro
-    if (!res.ok) {
-      const errorData = await res.json();
-      throw new Error(errorData.mensagem || "Erro na requisição");
-    }
-
-    return await res.json();
-  } catch (err) {
-    // Pode ser ajustado para mostrar em toast futuramente
-    console.error("Erro na API:", err.message);
-    throw err;
+// Interceptor para adicionar token JWT automaticamente
+instance.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
-}
+  return config;
+});
 
-// Exporta funções padronizadas de acesso à API
 export default {
-  get: (url) => apiFetch(url, { method: "GET" }),
-  post: (url, body) =>
-    apiFetch(url, {
-      method: "POST",
-      body: JSON.stringify(body),
-    }),
-  put: (url, body) =>
-    apiFetch(url, {
-      method: "PUT",
-      body: JSON.stringify(body),
-    }),
-  delete: (url) => apiFetch(url, { method: "DELETE" }),
-
-  /**
-   * Upload com FormData — usado para imagens e arquivos.
-   */
+  get: (url) => instance.get(url).then(res => res.data),
+  post: (url, body) => instance.post(url, body).then(res => res.data),
+  put: (url, body) => instance.put(url, body).then(res => res.data),
+  delete: (url) => instance.delete(url).then(res => res.data),
   upload: (url, formData) =>
-    apiFetch(url, {
-      method: "POST",
-      body: formData,
-    }),
+    instance.post(url, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }).then(res => res.data),
 };
