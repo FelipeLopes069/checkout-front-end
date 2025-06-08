@@ -40,10 +40,28 @@ export default function LoginPage() {
       window.location.href = "/dashboard"; // Redireciona após login
     } catch (err) {
       console.error("❌ Erro no login:", err);
+
       if (err.name === "AbortError") {
-        setErro("⏱️ O servidor não respondeu."); // Erro de timeout
+        setErro("⏱️ O servidor demorou para responder. Tente novamente.");
+      } else if (err.response) {
+        const status = err.response.status;
+        const msg = err.response.data?.message;
+
+        if (status === 400) {
+          setErro("⚠️ Preencha todos os campos corretamente.");
+        } else if (status === 401) {
+          setErro("🔒 E-mail ou senha incorretos.");
+        } else if (status === 403) {
+          setErro("🚫 Acesso negado. Verifique suas credenciais.");
+        } else if (status === 429) {
+          setErro("⛔ Muitas tentativas. Aguarde um pouco e tente novamente.");
+        } else if (status >= 500) {
+          setErro("💥 Erro interno no servidor. Tente novamente em instantes.");
+        } else {
+          setErro(msg || "⚠️ Não foi possível realizar o login.");
+        }
       } else {
-        setErro(err.message || "Erro ao conectar."); // Erro genérico
+        setErro("🌐 Erro de conexão. Verifique sua internet.");
       }
     } finally {
       clearTimeout(timeout); // Limpa o timeout

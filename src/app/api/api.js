@@ -1,5 +1,5 @@
 // Base da API (pode ser substituído por variável de ambiente se necessário)
-const baseURL = " https://clumsy-june-fynancce-v2-efb041b8.koyeb.app";
+const baseURL = "http://localhost:5050";
 
 /**
  * Recupera o token JWT armazenado localmente.

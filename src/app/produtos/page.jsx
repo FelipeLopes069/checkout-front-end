@@ -134,7 +134,7 @@ export default function ProdutosPage() {
 
     const backendBaseURL =
       typeof window !== "undefined" && window.location.origin.includes("localhost")
-        ? "http://localhost:5000"
+        ? "http://localhost:5050"
         : "https://coloured-siana-fynancce-v2-8cb1dd20.koyeb.app";
 
     return url.startsWith("http") ? url : `${backendBaseURL}${url}`;
